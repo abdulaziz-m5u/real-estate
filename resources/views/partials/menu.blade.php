@@ -29,19 +29,19 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->is('admin/locations') || request()->is('admin/locations/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.locations.index') }}" class="nav-link {{ request()->is('admin/locations') || request()->is('admin/locations/*') ? 'active' : '' }}">
                         <i class="fas fa-gift nav-icon"></i>
                         Locations
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->is('admin/event-types') || request()->is('admin/event-types/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.event_types.index') }}" class="nav-link {{ request()->is('admin/event-types') || request()->is('admin/event-types/*') ? 'active' : '' }}">
                         <i class="fas fa-gift  nav-icon"></i>
                         Event Types
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->is('admin/venues') || request()->is('admin/venues/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.venues.index') }}" class="nav-link {{ request()->is('admin/venues') || request()->is('admin/venues/*') ? 'active' : '' }}">
                         <i class="fas fa-gift  nav-icon"></i>
                         Venues
                     </a>

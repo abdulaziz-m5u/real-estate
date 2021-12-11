@@ -11,10 +11,11 @@ class Venue extends Model
 
     protected $fillable = [
         'name',
+        'location_id',
         'slug', 
         'address', 
         'latitude', 
-        'longtitude',
+        'longitude',
         'description',
         'features',
         'people_minimum',
@@ -22,4 +23,13 @@ class Venue extends Model
         'price_per_hour',
         'is_featured',
     ];
+
+    public function event_types()
+    {
+        return $this->belongsToMany(EventType::class);
+    }
+
+    public function location(){
+        return $this->belongsTo(Location::class);
+    }
 }
