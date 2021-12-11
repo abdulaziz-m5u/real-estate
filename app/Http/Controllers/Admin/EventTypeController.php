@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Models\EventType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventTypeRequest;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 
 class EventTypeController extends Controller
 {
+    use MediaUploadingTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +41,11 @@ class EventTypeController extends Controller
      */
     public function store(StoreEventTypeRequest $request)
     {
-        EventType::create($request->validated());
+        $eventType = EventType::create($request->validated());
+
+        if ($request->input('photo', false)) {
+            $eventType->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
+        }
 
         return redirect()->route('admin.event_types.index')->with('message', 'Success!');
     }
@@ -65,6 +72,14 @@ class EventTypeController extends Controller
     {
         $eventType->update($request->validated());
 
+        if ($request->input('photo', false)) {
+            if (!$eventType->photo || $request->input('photo') !== $eventType->photo->file_name) {
+                $eventType->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
+            }
+        } elseif ($eventType->photo) {
+            $eventType->photo->delete();
+        }
+
         return redirect()->route('admin.event_types.index')->with('message', 'Success!');
     }
 
@@ -80,4 +95,5 @@ class EventTypeController extends Controller
 
         return redirect()->route('admin.event_types.index')->with('message', 'Success!');
     }
+
 }

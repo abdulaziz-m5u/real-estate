@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Venue;
 use App\Models\Location;
 use App\Models\EventType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenueRequest;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 
 class VenueController extends Controller
 {
+    use MediaUploadingTrait;
     /**
      * Display a listing of the resource.
      *
@@ -53,6 +54,14 @@ class VenueController extends Controller
             'is_featured' => $request->is_featured,
         ]);
         $venue->event_types()->sync($request->event_types);
+
+        if ($request->input('main_photo', false)) {
+            $venue->addMedia(storage_path('tmp/uploads/' . $request->input('main_photo')))->toMediaCollection('main_photo');
+        }
+
+        foreach ($request->input('gallery', []) as $file) {
+            $venue->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('gallery');
+        }
 
         return redirect()->route('admin.venues.index')->with('message','Success !');
     }

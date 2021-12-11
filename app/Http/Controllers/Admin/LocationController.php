@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Location;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLocationRequest;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 
 class LocationController extends Controller
 {
+    use MediaUploadingTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +41,11 @@ class LocationController extends Controller
      */
     public function store(StoreLocationRequest $request)
     {
-        Location::create($request->validated());
+        $location = Location::create($request->validated());
+
+        if ($request->input('photo', false)) {
+            $location->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
+        }
 
         return redirect()->route('admin.locations.index')->with('message', 'Success !');
     }
@@ -64,6 +71,14 @@ class LocationController extends Controller
     public function update(StoreLocationRequest $request,Location $location)
     {
         $location->update($request->validated());
+
+        if ($request->input('photo', false)) {
+            if (!$location->photo || $request->input('photo') !== $location->photo->file_name) {
+                $location->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
+            }
+        } elseif ($location->photo) {
+            $location->photo->delete();
+        }
 
         return redirect()->route('admin.locations.index')->with('message', 'Success !');
     }

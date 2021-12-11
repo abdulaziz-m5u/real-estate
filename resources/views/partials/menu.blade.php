@@ -10,24 +10,6 @@
                     Dashboard
                 </a>
             </li>
-                <li class="nav-item nav-dropdown">
-                    <a class="nav-link  nav-dropdown-toggle" href="#">
-                        <i class="fa-fw fas fa-users nav-icon">
-
-                        </i>
-                        User Management
-                    </a>
-                    <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a href="" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-user nav-icon">
-
-                                    </i>
-                                    Users
-                                </a>
-                            </li>
-                    </ul>
-                </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.locations.index') }}" class="nav-link {{ request()->is('admin/locations') || request()->is('admin/locations/*') ? 'active' : '' }}">
                         <i class="fas fa-gift nav-icon"></i>
@@ -47,12 +29,15 @@
                     </a>
                 </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
+                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
                     </i>
                     Logout
                 </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="post">
+                    @csrf 
+                </form>
             </li>
         </ul>
 
