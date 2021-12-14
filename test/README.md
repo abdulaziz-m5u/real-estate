@@ -1,1 +1,0 @@
-# Laravel real estate project
