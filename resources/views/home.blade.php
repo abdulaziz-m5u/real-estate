@@ -13,7 +13,7 @@
                     <p class="mb-2"><strong>${{ number_format($featuredVenue->price_per_hour) }}</strong></p>
 
 
-                    <p class="mb-0"><a href=""
+                    <p class="mb-0"><a href="{{ route('venues.show', [$featuredVenue->slug, $featuredVenue->id]) }}"
                                        class="text-uppercase small letter-spacing-1 font-weight-bold">More Details</a>
                     </p>
 
